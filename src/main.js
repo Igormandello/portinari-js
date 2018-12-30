@@ -82,12 +82,15 @@ class GameEngine {
   _update(time) {
     if (!time)
       time = Date.now();
-      
+
     let delta = time - this._lastTime;
         this._lastTime = time;
 
     let ratio = 1 / (this._msGoal / delta);
-    this._updateList.forEach(obj => obj.fn(ratio));
+    this._updateList.forEach(obj => {
+      if (obj.active)
+        obj.fn(ratio);
+    });
 
     if (!this._stop)
       this._animationFrame(this._update.bind(this));

@@ -78,7 +78,7 @@ var GameEngine = function () {
 
       var ratio = 1 / (this._msGoal / delta);
       this._updateList.forEach(function (obj) {
-        return obj.fn(ratio);
+        if (obj.active) obj.fn(ratio);
       });
 
       if (!this._stop) this._animationFrame(this._update.bind(this));else {
