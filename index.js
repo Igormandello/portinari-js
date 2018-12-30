@@ -10,6 +10,7 @@ var GameEngine = function () {
 
     this._ratio = 16 / 9;
     this._fps = 60;
+    this._updateList = [];
 
     if (ratio && typeof ratio == 'number') this._ratio = ratio;
 
@@ -17,6 +18,37 @@ var GameEngine = function () {
   }
 
   _createClass(GameEngine, [{
+    key: 'addUpdateComponent',
+    value: function addUpdateComponent(fn, label) {
+      if (!fn || typeof fn !== 'function') fn = function fn() {};
+
+      if (label) {
+        var index = this._updateList.findIndex(function (obj) {
+          return obj.label === label;
+        });
+
+        if (index >= 0) this._updateList[index].fn = fn;else this._updateList.push({ label: label, fn: fn, active: true });
+      }
+    }
+  }, {
+    key: 'removeUpdateComponent',
+    value: function removeUpdateComponent(label) {
+      var index = this._updateList.findIndex(function (obj) {
+        return obj.label === label;
+      });
+
+      if (index >= 0) this._updateList.splice(index, 1);
+    }
+  }, {
+    key: 'toggleUpdateComponent',
+    value: function toggleUpdateComponent(label) {
+      var index = this._updateList.findIndex(function (obj) {
+        return obj.label === label;
+      });
+
+      if (index >= 0) this._updateList[index].active = !this._updateList[index].active;
+    }
+  }, {
     key: 'ratio',
     get: function get() {
       return this._ratio;
@@ -25,6 +57,20 @@ var GameEngine = function () {
     key: 'fps',
     get: function get() {
       return this._fps;
+    }
+  }, {
+    key: 'updateListLength',
+    get: function get() {
+      return this._updateList.length;
+    }
+  }, {
+    key: 'activeUpdateComponents',
+    get: function get() {
+      return this._updateList.reduce(function (arr, obj) {
+        if (obj.active) arr.push(obj.label);
+
+        return arr;
+      }, []);
     }
   }]);
 
