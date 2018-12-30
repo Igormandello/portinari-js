@@ -9,6 +9,12 @@ class GameEngine {
 
     if (targetFPS && typeof targetFPS == 'number')
       this._fps = targetFPS;
+
+    this._msGoal = 1000 / this._fps;
+    if (typeof window !== 'undefined')
+      this._animationFrame = window.requestAnimationFrame;
+    else
+      this._animationFrame = fn => setTimeout(fn, this._msGoal);
   }
 
   get ratio() {
@@ -27,7 +33,7 @@ class GameEngine {
     return this._updateList.reduce((arr, obj) => {
       if (obj.active)
         arr.push(obj.label);
-        
+
       return arr;
     }, []);
   }
@@ -58,6 +64,42 @@ class GameEngine {
     
     if (index >= 0)
       this._updateList[index].active = !this._updateList[index].active;
+  }
+
+  start() {
+    if (!this._animationFrame || typeof this._animationFrame != 'function')
+      return false;
+      
+    if (!this._running) {
+      this._running = true;
+      this._lastTime = Date.now();
+      this._animationFrame(this._update.bind(this));
+    }
+
+    return true;
+  }
+
+  _update(time) {
+    if (!time)
+      time = Date.now();
+      
+    let delta = time - this._lastTime;
+        this._lastTime = time;
+
+    let ratio = 1 / (this._msGoal / delta);
+    this._updateList.forEach(obj => obj.fn(ratio));
+
+    if (!this._stop)
+      this._animationFrame(this._update.bind(this));
+    else {
+      this._running = false;
+      this._stop = false;
+    }
+  }
+
+  stop() {
+    if (this._running)
+      this._stop = true;
   }
 }
 

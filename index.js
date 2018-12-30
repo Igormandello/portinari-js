@@ -6,6 +6,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var GameEngine = function () {
   function GameEngine(ratio, targetFPS) {
+    var _this = this;
+
     _classCallCheck(this, GameEngine);
 
     this._ratio = 16 / 9;
@@ -15,6 +17,11 @@ var GameEngine = function () {
     if (ratio && typeof ratio == 'number') this._ratio = ratio;
 
     if (targetFPS && typeof targetFPS == 'number') this._fps = targetFPS;
+
+    this._msGoal = 1000 / this._fps;
+    if (typeof window !== 'undefined') this._animationFrame = window.requestAnimationFrame;else this._animationFrame = function (fn) {
+      return setTimeout(fn, _this._msGoal);
+    };
   }
 
   _createClass(GameEngine, [{
@@ -47,6 +54,42 @@ var GameEngine = function () {
       });
 
       if (index >= 0) this._updateList[index].active = !this._updateList[index].active;
+    }
+  }, {
+    key: 'start',
+    value: function start() {
+      if (!this._animationFrame || typeof this._animationFrame != 'function') return false;
+
+      if (!this._running) {
+        this._running = true;
+        this._lastTime = Date.now();
+        this._animationFrame(this._update.bind(this));
+      }
+
+      return true;
+    }
+  }, {
+    key: '_update',
+    value: function _update(time) {
+      if (!time) time = Date.now();
+
+      var delta = time - this._lastTime;
+      this._lastTime = time;
+
+      var ratio = 1 / (this._msGoal / delta);
+      this._updateList.forEach(function (obj) {
+        return obj.fn(ratio);
+      });
+
+      if (!this._stop) this._animationFrame(this._update.bind(this));else {
+        this._running = false;
+        this._stop = false;
+      }
+    }
+  }, {
+    key: 'stop',
+    value: function stop() {
+      if (this._running) this._stop = true;
     }
   }, {
     key: 'ratio',

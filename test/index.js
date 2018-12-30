@@ -70,12 +70,13 @@ describe('update components running', () => {
     assert.equal(a, 0);
   });
 
-  it('should run the updates', () => {
-    ge.start();
+  it('should run the updates', resolve => {
+    assert.equal(ge.start(), true);
 
     setTimeout(() => {
-      assert.equal(a, 4);
       ge.stop();
-    }, 1 / 30);
+      assert.equal(a, 4);
+      resolve();
+    }, 100 / 3);
   });
 });
