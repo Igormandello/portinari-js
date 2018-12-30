@@ -1,0 +1,24 @@
+{
+  "name": "game-engine-js",
+  "version": "1.0.0",
+  "description": "Make your javascript canvas based games with ease",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Igormandello/game-engine-js.git"
+  },
+  "keywords": [
+    "canvas",
+    "game",
+    "engine"
+  ],
+  "author": "Igor Mandello",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Igormandello/game-engine-js/issues"
+  },
+  "homepage": "https://github.com/Igormandello/game-engine-js#readme"
+}
