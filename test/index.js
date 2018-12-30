@@ -44,3 +44,38 @@ describe('adding update components', () => {
     assert.equal(ge.activeUpdateComponents[0], 'second');
   });
 });
+
+describe('update components running', () => {
+  let a = 0;
+  before(() => {
+    ge = new GameEngine();
+
+    ge.addUpdateComponent(() => {
+      if (a == 0)
+       a += 2;
+    }, 'first');
+
+    ge.addUpdateComponent(() => {
+      if (a == 2)
+       a++;
+    }, 'second');
+
+    ge.addUpdateComponent(() => {
+      if (a == 3)
+       a++;
+    }, 'third');
+  });
+
+  it('should not have started yet', () => {
+    assert.equal(a, 0);
+  });
+
+  it('should run the updates', () => {
+    ge.start();
+
+    setTimeout(() => {
+      assert.equal(a, 4);
+      ge.stop();
+    }, 1 / 30);
+  });
+});
