@@ -21,3 +21,26 @@ describe('constructing', () => {
     assert.equal(ge.fps, 60);
   });
 });
+
+describe('adding update components', () => {
+  before(() => {
+    ge = new GameEngine();
+  });
+
+  it('should have 0 elements in the update list', () => {
+    assert.equal(ge.updateListLength, 0);
+  });
+
+  it('should add 2 elements to the update list', () => {
+    ge.addUpdateComponent(undefined, 'first');
+    ge.addUpdateComponent(undefined, 'second');
+
+    assert.equal(ge.updateListLength, 2);
+  });
+
+  it('should remove only the element with the "first" label', () => {
+    ge.removeUpdateComponent('first');
+    assert.equal(ge.updateListLength, 1);
+    assert.equal(ge.activeUpdateComponents[0], 'second');
+  });
+});
