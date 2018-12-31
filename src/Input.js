@@ -16,6 +16,7 @@ class Input {
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', this._onKeyDown.bind(this));
       window.addEventListener('keyup', this._onKeyUp.bind(this));
+      window.addEventListener('blur', this._clearKeys.bind(this));
     }
   }
 
@@ -69,6 +70,10 @@ class Input {
     this._keyCallback(Object.assign({
       type: 'keyup'
     }, event));
+  }
+
+  _clearKeys() {
+    this._pressedKeys = [];
   }
 }
 
