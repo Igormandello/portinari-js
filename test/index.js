@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { GameEngine } = require('../dist/index.js');
+const { GameEngine } = require('../');
 
 let ge;
 describe('constructing', () => {
