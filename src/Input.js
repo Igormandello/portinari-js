@@ -14,8 +14,8 @@ class Input {
       throw 'The callback function is required'
 
     if (typeof window !== 'undefined') {
-      window.addEventListener('keydown', this._onKeyDown);
-      window.addEventListener('keyup', this._onKeyUp);
+      window.addEventListener('keydown', this._onKeyDown.bind(this));
+      window.addEventListener('keyup', this._onKeyUp.bind(this));
     }
   }
 
@@ -25,14 +25,14 @@ class Input {
 
   get axis() {
     let horizontal = 0, vertical = 0;
-    if (this._pressedKeys.some(obj => obj.keycode === Keys.A.keycode || obj.keycode === Keys.LEFT.keycode))
+    if (this._pressedKeys.some(obj => obj.keyCode === Keys.A.keyCode || obj.keyCode === Keys.LEFT.keyCode))
       horizontal = -1;
-    else if (this._pressedKeys.some(obj => obj.keycode === Keys.D.keycode || obj.keycode === Keys.RIGHT.keycode))
+    else if (this._pressedKeys.some(obj => obj.keyCode === Keys.D.keyCode || obj.keyCode === Keys.RIGHT.keyCode))
       horizontal = 1;
 
-    if (this._pressedKeys.some(obj => obj.keycode === Keys.W.keycode || obj.keycode === Keys.UP.keycode))
+    if (this._pressedKeys.some(obj => obj.keyCode === Keys.W.keyCode || obj.keyCode === Keys.UP.keyCode))
       vertical = -1;
-    else if (this._pressedKeys.some(obj => obj.keycode === Keys.S.keycode || obj.keycode === Keys.DOWN.keycode))
+    else if (this._pressedKeys.some(obj => obj.keyCode === Keys.S.keyCode || obj.keyCode === Keys.DOWN.keyCode))
       vertical = 1;
 
     return {
@@ -43,15 +43,15 @@ class Input {
 
   isPressed(key) {
     if (typeof key === 'number')
-      return this._pressedKeys.some(obj => obj.keycode == key);
+      return this._pressedKeys.some(obj => obj.keyCode == key);
     else if (typeof key === 'string')
       return this._pressedKeys.some(obj => obj.key == key.toUpperCase());
   }
 
   _onKeyDown(event) {
-    if (!this._pressedKeys.some(obj => obj.keycode === event.keycode)) {
+    if (!this._pressedKeys.some(obj => obj.keyCode === event.keyCode)) {
       this._pressedKeys.push({
-        keycode: event.keycode,
+        keyCode: event.keyCode,
         key: event.key.toUpperCase()
       });
 
@@ -62,7 +62,7 @@ class Input {
   }
 
   _onKeyUp(event) {
-    let index = this._pressedKeys.findIndex(obj => obj.keycode === event.keycode);
+    let index = this._pressedKeys.findIndex(obj => obj.keyCode === event.keyCode);
     if (index >= 0)
       this._pressedKeys.splice(index, 1);
 

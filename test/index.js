@@ -125,9 +125,9 @@ describe('Input class tests', () => {
       timesCalled = 0;
 
       input = new Input(evt => {
-        if (evt.type == 'keydown' && evt.keycode == 65)
+        if (evt.type == 'keydown' && evt.keyCode == 65)
           a++;
-        else if (evt.type == 'keyup' && evt.keycode == 66)
+        else if (evt.type == 'keyup' && evt.keyCode == 66)
           a += 2;
 
         timesCalled++;
@@ -148,7 +148,7 @@ describe('Input class tests', () => {
 
     it('should call the keyup event with the correct keycode', () => {
       input._onKeyUp({
-        keycode: 66,
+        keyCode: 66,
         key: 'B'
       });
 
