@@ -22,10 +22,19 @@ class GameEngine {
       if (!(canvas || canvas instanceof HTMLElement))
         throw 'Canvas must be a HTML Element';
 
+      Object.assign(document.body.style, {
+        margin: 0,
+        height: '100vh',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+      });
+
       let w = document.body.clientWidth,
           h = document.body.clientHeight;
       canvas.width = w;
       canvas.height = h;
+      canvas.style.alignSelf = 'center';
   
       if (w * (1 / this._ratio) > h)
         canvas.width = h * this._ratio;
