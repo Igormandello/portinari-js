@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { GameEngine, Input, Keys } = require('../');
+const { GameEngine, Input, Keys } = require('../src/');
 
 describe('Game Engine class tests', () => {
   let ge;
