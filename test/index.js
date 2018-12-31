@@ -5,7 +5,7 @@ describe('Game Engine class tests', () => {
   let ge;
   describe('constructing', () => {
     it('should keep the parameters', () => {
-      ge = new GameEngine(1, 30);
+      ge = new GameEngine(null, 1, 30);
       assert.equal(ge.ratio, 1);
       assert.equal(ge.fps, 30);
     });
@@ -17,7 +17,7 @@ describe('Game Engine class tests', () => {
     });
 
     it('should set the ratio to 16/9 and fps to 60 due to invalid parameters', () => {
-      ge = new GameEngine('invalid', 'invalid');
+      ge = new GameEngine(null, 'invalid', 'invalid');
       assert.equal(ge.ratio, 16 / 9);
       assert.equal(ge.fps, 60);
     });
@@ -49,7 +49,7 @@ describe('Game Engine class tests', () => {
   describe('update components running', () => {
     let a = 0;
     before(() => {
-      ge = new GameEngine(100);
+      ge = new GameEngine(null, 100);
 
       ge.addUpdateComponent(() => {
         if (a == 0)

@@ -5,7 +5,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var GameEngine = function () {
-  function GameEngine(ratio, targetFPS) {
+  function GameEngine(canvas, ratio, targetFPS) {
     var _this = this;
 
     _classCallCheck(this, GameEngine);
@@ -19,7 +19,20 @@ var GameEngine = function () {
     if (targetFPS && typeof targetFPS == 'number') this._fps = targetFPS;
 
     this._msGoal = 1000 / this._fps;
-    if (typeof window !== 'undefined') this._animationFrame = window.requestAnimationFrame;else this._animationFrame = function (fn) {
+    if (typeof window !== 'undefined') {
+      this._animationFrame = window.requestAnimationFrame;
+
+      if (!(canvas || canvas instanceof HTMLElement)) throw 'Canvas must be a HTML Element';
+
+      var w = document.body.clientWidth,
+          h = document.body.clientHeight;
+      canvas.width = w;
+      canvas.height = h;
+
+      if (w * (1 / this._ratio) > h) canvas.width = h * this._ratio;else canvas.height = w * (1 / this._ratio);
+
+      this._context = canvas.getContext('2d');
+    } else this._animationFrame = function (fn) {
       return setTimeout(fn, _this._msGoal);
     };
   }
@@ -71,6 +84,8 @@ var GameEngine = function () {
   }, {
     key: '_update',
     value: function _update(time) {
+      var _this2 = this;
+
       if (!time) time = Date.now();
 
       var delta = time - this._lastTime;
@@ -78,7 +93,7 @@ var GameEngine = function () {
 
       var ratio = 1 / (this._msGoal / delta);
       this._updateList.forEach(function (obj) {
-        if (obj.active) obj.fn(ratio);
+        if (obj.active) obj.fn(_this2._context, ratio);
       });
 
       if (!this._stop) this._animationFrame(this._update.bind(this));else {

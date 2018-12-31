@@ -1,5 +1,5 @@
 class GameEngine {
-  constructor(ratio, targetFPS) {
+  constructor(canvas, ratio, targetFPS) {
     this._ratio = 16 / 9;
     this._fps = 60;
     this._updateList = [];
@@ -11,9 +11,24 @@ class GameEngine {
       this._fps = targetFPS;
 
     this._msGoal = 1000 / this._fps;
-    if (typeof window !== 'undefined')
+    if (typeof window !== 'undefined') {
       this._animationFrame = window.requestAnimationFrame;
-    else
+
+      if (!(canvas || canvas instanceof HTMLElement))
+        throw 'Canvas must be a HTML Element';
+
+      let w = document.body.clientWidth,
+          h = document.body.clientHeight;
+      canvas.width = w;
+      canvas.height = h;
+  
+      if (w * (1 / this._ratio) > h)
+        canvas.width = h * this._ratio;
+      else
+        canvas.height = w * (1 / this._ratio);
+
+      this._context = canvas.getContext('2d');
+    } else
       this._animationFrame = fn => setTimeout(fn, this._msGoal);
   }
 
@@ -89,7 +104,7 @@ class GameEngine {
     let ratio = 1 / (this._msGoal / delta);
     this._updateList.forEach(obj => {
       if (obj.active)
-        obj.fn(ratio);
+        obj.fn(this._context, ratio);
     });
 
     if (!this._stop)

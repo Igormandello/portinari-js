@@ -32,5 +32,13 @@ module.exports = {
   D: {
     keycode: 68,
     key: 'D'
+  },
+  ENTER: {
+    keycode: 13,
+    key: 'Enter'
+  },
+  SPACE: {
+    keycode: 32,
+    key: ' '
   }
 };
