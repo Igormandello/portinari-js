@@ -3,6 +3,9 @@ class GameEngine {
     this._ratio = 16 / 9;
     this._fps = 60;
     this._updateList = [];
+    this._animationList = [];
+    this._framesToNextAnimation = -1;
+    this._lastAnimationFrame = 0;
     this._frameCount = 0;
 
     if (ratio && typeof ratio == 'number')
@@ -90,6 +93,56 @@ class GameEngine {
       this._updateList[index].active = !this._updateList[index].active;
   }
 
+  addAnimationComponent(fn, frames, label) {
+    if (!fn || typeof fn !== 'function')
+      fn = () => {};
+
+    if (label) {
+      let index = this._animationList.findIndex(obj => obj.label === label);
+
+      if (index >= 0) {
+        this._animationList[index].fn = fn;
+        this._animationList[index].frames = frames;
+        this._animationList[index].remainingToAnimation = frames;
+      } else
+        this._animationList.push({
+          label,
+          fn,
+          frames,
+          remainingToAnimation: frames,
+          active: true
+        });
+
+      if (frames < this._framesToNextAnimation || this._framesToNextAnimation < 0)
+        this._framesToNextAnimation = frames;
+    }
+  }
+
+  removeAnimationComponent(label) {
+    let index = this._animationList.findIndex(obj => obj.label === label);
+    
+    if (index >= 0)
+      this._animationList.splice(index, 1);
+
+    if (this._animationList.length == 0)
+      this._framesToNextAnimation = -1;
+  }
+
+  toggleAnimationComponent(label) {
+    let index = this._animationList.findIndex(obj => obj.label === label);
+    
+    if (index >= 0) {
+      this._animationList[index].active = !this._animationList[index].active;
+      this._animationList[index].remainingToAnimation = this._animationList[index].frames;
+
+      if (this._animationList[index].active && (frames < this._framesToNextAnimation || this._framesToNextAnimation < 0))
+        this._framesToNextAnimation = this._animationList[index].frames;
+    }
+
+    if (!this._animationList.some(obj => obj.active))
+      this._framesToNextAnimation = -1;
+  }
+
   start() {
     if (!this._animationFrame || typeof this._animationFrame != 'function')
       return false;
@@ -110,6 +163,7 @@ class GameEngine {
 
   _update(time) {
     this._frameCount++;
+    this._animationUpdate();
 
     if (!time)
       time = Date.now();
@@ -128,6 +182,36 @@ class GameEngine {
     else {
       this._running = false;
       this._stop = false;
+    }
+  }
+
+  _animationUpdate() {
+    if (this._framesToNextAnimation == -1)
+      return;
+
+    if (this._framesToNextAnimation > 0)
+      this._framesToNextAnimation--;
+
+    if (this._framesToNextAnimation == 0) {
+      let framesDelta = this._frameCount - this._lastAnimationFrame;
+      this._lastAnimationFrame = this._frameCount;
+
+      let nextAnimation = -1;
+      this._animationList.forEach((obj, i, arr) => {
+        if (obj.active) {
+          arr[i].remainingToAnimation -= framesDelta;
+
+          if (arr[i].remainingToAnimation == 0) {
+            arr[i].remainingToAnimation = arr[i].frames;
+            arr[i].fn();
+          }
+
+          if (arr[i].remainingToAnimation < nextAnimation || nextAnimation < 0)
+            nextAnimation = arr[i].remainingToAnimation;
+        }
+      });
+
+      this._framesToNextAnimation = nextAnimation;
     }
   }
 
