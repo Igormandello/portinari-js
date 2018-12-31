@@ -4,6 +4,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var Keys = require('./Keys');
+
 var Input = function () {
   function Input(keyCallback) {
     _classCallCheck(this, Input);
@@ -66,6 +68,28 @@ var Input = function () {
       return this._pressedKeys.map(function (obj) {
         return obj.key;
       });
+    }
+  }, {
+    key: 'axis',
+    get: function get() {
+      var horizontal = 0,
+          vertical = 0;
+      if (this._pressedKeys.some(function (obj) {
+        return obj.keycode === Keys.A.keycode || obj.keycode === Keys.LEFT.keycode;
+      })) horizontal = -1;else if (this._pressedKeys.some(function (obj) {
+        return obj.keycode === Keys.D.keycode || obj.keycode === Keys.RIGHT.keycode;
+      })) horizontal = 1;
+
+      if (this._pressedKeys.some(function (obj) {
+        return obj.keycode === Keys.W.keycode || obj.keycode === Keys.UP.keycode;
+      })) vertical = -1;else if (this._pressedKeys.some(function (obj) {
+        return obj.keycode === Keys.S.keycode || obj.keycode === Keys.DOWN.keycode;
+      })) vertical = 1;
+
+      return {
+        horizontal: horizontal,
+        vertical: vertical
+      };
     }
   }]);
 
