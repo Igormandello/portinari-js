@@ -12,7 +12,8 @@ class GameEngine {
 
     this._msGoal = 1000 / this._fps;
     if (typeof window !== 'undefined') {
-      this._animationFrame = window.requestAnimationFrame;
+      if (targetFPS == 60)
+        this._animationFrame = window.requestAnimationFrame.bind(window);
 
       if (!(canvas || canvas instanceof HTMLElement))
         throw 'Canvas must be a HTML Element';
@@ -27,8 +28,11 @@ class GameEngine {
       else
         canvas.height = w * (1 / this._ratio);
 
+      this._canvas = canvas;
       this._context = canvas.getContext('2d');
-    } else
+    } 
+    
+    if (typeof window === 'undefined' || targetFPS != 60)
       this._animationFrame = fn => setTimeout(fn, this._msGoal);
   }
 
@@ -51,6 +55,10 @@ class GameEngine {
 
       return arr;
     }, []);
+  }
+
+  get canvas() {
+    return this._canvas;
   }
 
   addUpdateComponent(fn, label) {
