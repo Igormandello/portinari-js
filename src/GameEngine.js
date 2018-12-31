@@ -3,6 +3,7 @@ class GameEngine {
     this._ratio = 16 / 9;
     this._fps = 60;
     this._updateList = [];
+    this._frameCount = 0;
 
     if (ratio && typeof ratio == 'number')
       this._ratio = ratio;
@@ -96,6 +97,7 @@ class GameEngine {
     if (!this._running) {
       this._running = true;
       this._lastTime = Date.now();
+      this._frameCount = 0;
       this._animationFrame(this._update.bind(this));
     }
 
@@ -103,6 +105,8 @@ class GameEngine {
   }
 
   _update(time) {
+    this._frameCount++;
+
     if (!time)
       time = Date.now();
 
@@ -112,7 +116,7 @@ class GameEngine {
     let ratio = 1 / (this._msGoal / delta);
     this._updateList.forEach(obj => {
       if (obj.active)
-        obj.fn(this._context, ratio);
+        obj.fn(this._context, ratio, this._frameCount);
     });
 
     if (!this._stop)
