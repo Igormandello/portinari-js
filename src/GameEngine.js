@@ -98,7 +98,11 @@ class GameEngine {
       this._running = true;
       this._lastTime = Date.now();
       this._frameCount = 0;
-      this._animationFrame(this._update.bind(this));
+
+      if (typeof window === 'undefined' || this._fps != 60)
+        this._update();
+      else
+        this._animationFrame(this._update.bind(this));
     }
 
     return true;
