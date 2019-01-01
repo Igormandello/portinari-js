@@ -6,7 +6,7 @@
   "scripts": {
     "webpack": "webpack",
     "webpack-dev": "webpack --watch",
-    "start": "npm run webpack-dev && live-server --open=example",
+    "start": "concurrently 'npm run webpack-dev' 'live-server --open=example'",
     "test": "mocha"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "babel-loader": "^8.0.4",
+    "concurrently": "^4.1.0",
     "live-server": "^1.2.1",
     "mocha": "^5.2.0",
     "webpack": "^4.28.3",
