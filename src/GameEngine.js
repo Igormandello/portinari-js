@@ -1,26 +1,35 @@
 class GameEngine {
-  constructor(canvas, ratio, targetFPS) {
-    this._ratio = 16 / 9;
-    this._fps = 60;
+  constructor(opts) {
     this._updateList = [];
     this._animationList = [];
     this._framesToNextAnimation = -1;
     this._lastAnimationFrame = 0;
     this._frameCount = 0;
+    this._options = {
+      ratio: 16 / 9,
+      fps: 60
+    };
 
-    if (ratio && typeof ratio == 'number')
-      this._ratio = ratio;
+    if (opts && typeof opts === 'object') {
+      if (opts.ratio && typeof opts.ratio !== 'number')
+        delete opts.ratio
 
-    if (targetFPS && typeof targetFPS == 'number')
-      this._fps = targetFPS;
+      if (opts.fps && typeof opts.fps !== 'number')
+        delete opts.fps;
 
-    this._msGoal = 1000 / this._fps;
-    if (typeof window !== 'undefined') {
-      if (targetFPS == 60)
+      if (opts.canvas && !opts.canvas instanceof HTMLElement)
+        delete opts.canvas;
+    }
+
+    Object.assign(this._options, opts);
+
+    this._msGoal = 1000 / this._options.fps;
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      if (this._options.fps == 60)
         this._animationFrame = window.requestAnimationFrame.bind(window);
 
-      if (!(canvas || canvas instanceof HTMLElement))
-        throw 'Canvas must be a HTML Element';
+      if (!this._options.canvas)
+        this._options.canvas = document.body.appendChild(document.createElement('canvas'));
 
       Object.assign(document.body.style, {
         margin: 0,
@@ -31,17 +40,17 @@ class GameEngine {
       });
 
       let w = document.body.clientWidth,
-          h = document.body.clientHeight;
+          h = document.body.clientHeight,
+          canvas = this._options.canvas;
       canvas.width = w;
       canvas.height = h;
       canvas.style.alignSelf = 'center';
   
-      if (w * (1 / this._ratio) > h)
-        canvas.width = h * this._ratio;
+      if (w * (1 / this._options.ratio) > h)
+        canvas.width = h * this._options.ratio;
       else
-        canvas.height = w * (1 / this._ratio);
+        canvas.height = w * (1 / this._options.ratio);
 
-      this._canvas = canvas;
       this._context = canvas.getContext('2d');
     } 
     
@@ -50,11 +59,11 @@ class GameEngine {
   }
 
   get ratio() {
-    return this._ratio;
+    return this._options.ratio;
   }
 
   get fps() {
-    return this._fps;
+    return this._options.fps;
   }
 
   get updateListLength() {
@@ -71,7 +80,7 @@ class GameEngine {
   }
 
   get canvas() {
-    return this._canvas;
+    return this._options.canvas;
   }
 
   addUpdateComponent(fn, label) {
