@@ -54,7 +54,7 @@ class GameEngine {
       this._context = canvas.getContext('2d');
     } 
     
-    if (typeof window === 'undefined' || targetFPS != 60)
+    if (typeof window === 'undefined' || this._options.fps != 60)
       this._animationFrame = fn => setTimeout(fn, this._msGoal);
   }
 
