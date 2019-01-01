@@ -3,15 +3,12 @@ const Keys = require('./Keys');
 class Input {
   constructor(keyCallback) {
     this._pressedKeys = [];
-    this._keyCallback = () => true;
 
     if (keyCallback)
       if (typeof keyCallback === 'function')
         this._keyCallback = keyCallback;
       else
         throw 'The callback parameter must be a function';
-    else
-      throw 'The callback function is required'
 
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', this._onKeyDown.bind(this));
@@ -56,9 +53,10 @@ class Input {
         key: event.key.toUpperCase()
       });
 
-      this._keyCallback(Object.assign({
-        type: 'keydown'
-      }, event));
+      if (this._keyCallback)
+        this._keyCallback(Object.assign({
+          type: 'keydown'
+        }, event));
     }
   }
 
@@ -67,9 +65,10 @@ class Input {
     if (index >= 0)
       this._pressedKeys.splice(index, 1);
 
-    this._keyCallback(Object.assign({
-      type: 'keyup'
-    }, event));
+    if (this._keyCallback)
+      this._keyCallback(Object.assign({
+        type: 'keyup'
+      }, event));
   }
 
   _clearKeys() {
