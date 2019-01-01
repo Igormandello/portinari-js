@@ -6,8 +6,12 @@ class Resources {
     let imageLoaded = () => {
       remaining--;
       
-      if (remaining <= 0 && this.onload && typeof this.onload === 'function')
-        this.onload();
+      if (remaining <= 0) {
+        this._loaded = true;
+
+        if (this._onload && typeof this._onload === 'function')
+          this._onload();
+      }
     }
 
     if (remaining == 0) {
@@ -27,6 +31,13 @@ class Resources {
 
   get images() {
     return this._images;
+  }
+
+  set onload(fn) {
+    this._onload = fn;
+
+    if (this._loaded && typeof this._onload === 'function')
+      this._onload();
   }
 }
 
