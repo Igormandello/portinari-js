@@ -1,4 +1,7 @@
-let ge = new GameEngine(document.getElementById('cnv'), 16 / 9, 60),
+let ge = new GameEngine({
+      ratio: 16 / 9,
+      fps: 60
+    }),
     res = new Resources('assets', [ 'foo.png' ]),
     input = new Input(() => true);
 
