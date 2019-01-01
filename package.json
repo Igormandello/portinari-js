@@ -5,8 +5,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "webpack": "webpack",
-    "start": "npm run webpack && live-server --open=example",
-    "test": "npm run webpack && mocha"
+    "webpack-dev": "webpack --watch",
+    "start": "npm run webpack-dev && live-server --open=example",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
