@@ -105,15 +105,15 @@ describe('Game Engine class tests', () => {
 describe('Input class tests', () => {
   let input;
   describe('constructing', () => {
-    it('should throw an error with there is no callback function', () => {
-      assert.throws(() => {
+    it('should not throw an error with there is no callback function', () => {
+      assert.doesNotThrow(() => {
         input = new Input();
       });
     });
 
     it('should throw an error with the parameter is not a function', () => {
       assert.throws(() => {
-        input = new Input();
+        input = new Input('invalid');
       });
     });
 
@@ -165,7 +165,7 @@ describe('Input class tests', () => {
 
   describe('isPressed checks', () => {
     before(() => {
-      input = new Input(() => true);
+      input = new Input();
     });
 
     it('should not have any keys pressed', () => {
@@ -197,7 +197,7 @@ describe('Input class tests', () => {
 
   describe('axis checks', () => {
     beforeEach(() => {
-      input = new Input(() => true);
+      input = new Input();
     });
 
     it('should have the value 0 in both axis', () => {
