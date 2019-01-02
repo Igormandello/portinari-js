@@ -19,6 +19,13 @@ class GameEngine {
 
       if (opts.canvas && !opts.canvas instanceof HTMLElement)
         delete opts.canvas;
+
+      if (opts.fullScreen) {
+        delete this._options.ratio;
+
+        if (opts.ratio)
+          delete opts.ratio;
+      }
     }
 
     Object.assign(this._options, opts);
@@ -46,10 +53,11 @@ class GameEngine {
       canvas.height = h;
       canvas.style.alignSelf = 'center';
   
-      if (w * (1 / this._options.ratio) > h)
-        canvas.width = h * this._options.ratio;
-      else
-        canvas.height = w * (1 / this._options.ratio);
+      if (!this._options.fullScreen)
+        if (w * (1 / this._options.ratio) > h)
+          canvas.width = h * this._options.ratio;
+        else
+          canvas.height = w * (1 / this._options.ratio);
 
       this._context = canvas.getContext('2d');
     } 
