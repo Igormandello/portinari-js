@@ -33,6 +33,10 @@ class Resources {
     return this._images;
   }
 
+  get loaded() {
+    return this._loaded;
+  }
+
   set onload(fn) {
     this._onload = fn;
 
