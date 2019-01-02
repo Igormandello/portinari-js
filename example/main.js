@@ -3,7 +3,7 @@ let ge = new GameEngine({
       fps: 60
     }),
     res = new Resources('assets', [ 'foo.png' ]),
-    input = new Input(() => true);
+    input = new Input();
 
 let greyBackground = true;
 ge.addUpdateComponent((ctx) => {

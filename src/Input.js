@@ -54,9 +54,7 @@ class Input {
       });
 
       if (this._keyCallback)
-        this._keyCallback(Object.assign({
-          type: 'keydown'
-        }, event));
+        this._keyCallback(event);
     }
   }
 
@@ -66,9 +64,7 @@ class Input {
       this._pressedKeys.splice(index, 1);
 
     if (this._keyCallback)
-      this._keyCallback(Object.assign({
-        type: 'keyup'
-      }, event));
+      this._keyCallback(event);
   }
 
   _clearKeys() {
