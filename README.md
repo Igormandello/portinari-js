@@ -239,3 +239,57 @@ The state of each axis (horizontal and vertical), mapped between -1 and 1
 - Properties:
   - horizontal: The state of the horizontal axis, -1 if 'LEFT_ARROW' or 'A' is pressed and 1 if 'RIGHT_ARROW' or 'D' is pressed.
   - vertical:  The state of the vertical axis, -1 if 'ARROW_UP' or 'W' is pressed and 1 if 'ARROW_DOWN' or 'S' is pressed.
+
+---
+
+# The Resources module
+This module offers methods to load assets and store them globally
+
+### Usage
+```js
+const res = new Resources(rootDir, assets)
+```
+- rootDir
+  - Type: `string`
+  - The base directory
+- assets
+  - Type: `array`
+  - An array of strings, each one being a path to an image that will be loaded
+
+## Setters
+### `onload(callback)`
+- callback
+  - Type: `function`
+  - The function to be called when all the assets were loaded. When using assets inside the Game Engine, call `ge.start()` only after this callback was called
+
+## Getters
+### `images`
+- Type: `object`
+- An object with all the loaded images in the values and their filenames in the keys.
+
+#### Example
+```js
+const res = new Resources('assets', ['foo.png', 'bar.png'])
+
+res.onload(() => {
+  //The instance of Image containing the foo.png
+  let foo = res.images['foo.png']
+
+  //The instance of Image containing the bar.png
+  let bar = res.images['bar.png']
+
+  //Both of 'foo' and 'bar' can be used in ctx.drawImage
+})
+```
+
+### `loaded`
+- Type: `boolean`
+- The actual state of the assets loading. If there are a big amount of assets, this could be used to draw some loading spinner.
+
+---
+
+# Wrapping it all up
+The code in `game-engine-js/example/main` provides an example of using some of the functionalities presented here, to run it:
+```console
+$ yarn && yarn start
+```
