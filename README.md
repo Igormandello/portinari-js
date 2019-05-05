@@ -46,14 +46,14 @@ const ge = new GameEngine([options])
 ### canvas
   - Type: `HTMLElement`
   - Default: `null`
-  - The canvas instance that will be used. If `null`, a new canvas will be instanciated and appended to body
+  - The canvas instance that will be used. If `null`, a new canvas will be instantiated and appended to the body
 
 ## Methods
 ### `addUpdateComponent(fn, label)`
 Adds a new component to be called every frame.
 - fn
   - Type: `function`
-  - The callback component, has 3 parameters: `context`, `ratio` and `frameCount`. The `context` is the context of the canvas, use it do draw, `ratio` is the ratio of the current FPS to the target FPS, and `frameCount` is the number of frames elapsed since the engine started running.
+  - The callback component, has 3 parameters: `context`, `ratio` and `frameCount`. The `context` is the context of the canvas, use it to draw, `ratio` is the ratio of the current FPS to the target FPS, and `frameCount` is the number of frames elapsed since the engine started running.
 - label
   - Type: `string`
   - A label to identify this updateComponent, will be used to remove or disable it.
@@ -73,7 +73,7 @@ ge.addUpdateComponent((ctx, ratio, frameCount) => {
 }, 'clearBackground')
 ```
 
-if `fn` isn't a lambda function, `this` must be binded in order to access context variables:
+if `fn` isn't a lambda function, `this` must be bound in order to access context variables:
 ```js
 class Background {
   constructor() {
@@ -100,7 +100,7 @@ Removes an updateComponent from the update list.
   - The label of the updateComponent that will be removed
 
 ### `toggleUpdateComponent(label)`
-Toggles the state of an updateComponent, if its disabled, it won't be called in the next updates, but can be enabled again anytime with this same function.
+Toggles the state of an updateComponent, if it's disabled, it won't be called in the next updates, but can be enabled again anytime with this same function.
 - label
   - Type: `string`
   - The label of the updateComponent that will be toggled
@@ -109,7 +109,7 @@ Toggles the state of an updateComponent, if its disabled, it won't be called in 
 Adds a new animation to be called every `n` frames.
 - fn
   - Type: `function`
-  - The callback component to be called everytime the animation is triggered, doesn't have any parameters
+  - The callback component to be called every time the animation is triggered. Doesn't have any parameters
 - frames
   - Type: `number`
   - The number of frames between each call of the animation
@@ -143,7 +143,7 @@ Removes an animationComponent from the animation list.
   - The label of the animationComponent that will be removed
 
 ### `toggleAnimationComponent(label)`
-Toggles the state of an animationComponent, if its disabled, it won't be called in the next animation triggers, but can be enabled again anytime with this same function. After enabling it, the number of frames to trigger it again will be reset.
+Toggles the state of an animationComponent, if it's disabled, it won't be called in the next animation triggers, but can be enabled again anytime with this same function. After enabling it, the number of frames to trigger it again will be reset.
 - label
   - Type: `string`
   - The label of the animationComponent that will be toggled
