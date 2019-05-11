@@ -1,19 +1,19 @@
-# Game Engine JS
+# Portinari JS
 The easiest, lightest and fastest way to start using canvas in Javascript.
 
 ## Start using it right now 
 ```bash
-$ npm i game-engine-js
+$ npm i portinari
 # or
-$ yarn add game-engine-js
+$ yarn add portinari
 ```
 
 out of a node environment, import it directly from `node_modules`:
 ```html
-<script src="node_modules/game-engine-js/dist/index.js"></script>
+<script src="node_modules/portinari/dist/index.js"></script>
 ```
 
-## Using `game-engine-js`
+## Using `portinari`
 The package consists of 3 modules (so far): `GameEngine`, `Input` and `Resources`:
 
 # The Game Engine module
@@ -289,7 +289,7 @@ res.onload(() => {
 ---
 
 # Wrapping it all up
-The code in `game-engine-js/example/main` provides an example of using some of the functionalities presented here, to run it:
+The code in `portinari/example/main` provides an example of using some of the functionalities presented here, to run it:
 ```console
 $ yarn && yarn start
 ```

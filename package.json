@@ -1,6 +1,6 @@
 {
-  "name": "game-engine-js",
-  "version": "1.3.2",
+  "name": "portinari",
+  "version": "0.0.1",
   "description": "Make your javascript canvas based games with ease",
   "main": "./dist/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Igormandello/game-engine-js.git"
+    "url": "git+https://github.com/Igormandello/portinari-js.git"
   },
   "keywords": [
     "canvas",
@@ -21,9 +21,9 @@
   "author": "Igor Mandello",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Igormandello/game-engine-js/issues"
+    "url": "https://github.com/Igormandello/portinari-js/issues"
   },
-  "homepage": "https://github.com/Igormandello/game-engine-js#readme",
+  "homepage": "https://github.com/Igormandello/portinari-js#readme",
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
